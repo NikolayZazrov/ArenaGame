@@ -13,6 +13,7 @@ namespace ArenaGame
             public Hero Attacker { get; set; }
             public Hero Defender { get; set; }
             public double Attack { get; set; }
+            public string AttackUsed { get; set; }
             public double Damage { get; set; }
         }
 
@@ -52,6 +53,7 @@ namespace ArenaGame
                         Attacker = attacker,
                         Defender = defender,
                         Attack = attack,
+                        AttackUsed = SelectUniqueAttack(attacker),
                         Damage = actualDamage
                     }); 
                 }
@@ -61,6 +63,12 @@ namespace ArenaGame
                 defender = tempHero;
             }
             Winner = defender;
+        }
+
+        string SelectUniqueAttack(Hero attacker)
+        {
+            int len = attacker.PlayerWeapon.UniqueAttacks.Count;
+            return attacker.PlayerWeapon.UniqueAttacks.ElementAt(random.Next(len));
         }
     }
 }

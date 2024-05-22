@@ -6,19 +6,12 @@ using System.Threading.Tasks;
 
 namespace ArenaGame.Weapons
 {
-    public class Dagger : IWeapon
+    public class Dagger : Weapon
     {
-        public string Name { get; set; }
-
-        public double AttackDamage { get; private set; }
-
-        public double BlockingPower { get; private set; }
-
-        public Dagger(string name)
+        public Dagger(string name, double attackDamage, double damageMultiplier, double blockingPower)
+            : base(name, attackDamage, damageMultiplier, blockingPower)
         {
-            Name = name;
-            AttackDamage = 30;
-            BlockingPower = 1;
+            this.UniqueAttacks.AddRange(new string[] { "Stab", "Cut", "Severe" });
         }
     }
 }

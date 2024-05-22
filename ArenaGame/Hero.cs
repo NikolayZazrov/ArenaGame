@@ -1,5 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations.Schema;
+using System.Diagnostics.Contracts;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -12,8 +14,10 @@ namespace ArenaGame
         public string Name { get; private set; }
         public double Health { get; private set; }
         public double Armor { get; private set; }
-        public double Strenght { get; private set; }
-        public IWeapon Weapon { get; private set; }
+        public double Strength { get; private set; }
+        public Weapon PlayerWeapon { get; private set; }
+        public string SpecialAttack {  get; private set; }
+        public List<Weapon> Inventory { get; private set; }
         public bool IsAlive
         {
             get
@@ -22,21 +26,31 @@ namespace ArenaGame
             }
         }
 
-        public Hero(string name, double armor, double strenght, IWeapon weapon)
+        public Hero(string name, double armor, double strength, Weapon weapon)
         {
             Health = 100;
 
             Name = name;
             Armor = armor;
-            Strenght = strenght;
-            Weapon = weapon;
+            Strength = strength;
+            PlayerWeapon = weapon;
         }
 
+        public void AddToInventory(params Weapon[] weapons)
+        {
+            foreach (var weapon in weapons)
+            {
+                if (!Inventory.Contains(weapon))
+                {
+                    Inventory.Add(weapon);
+                }
+            }  
+        }
 
         // returns actual damage
         public virtual double Attack()
         {
-            double totalDamage = Strenght + Weapon.AttackDamage;
+            double totalDamage = Strength + (PlayerWeapon.AttackDamage * PlayerWeapon.DamageMultiplier);
             double coef = random.Next(80, 120 + 1);
             double realDamage = totalDamage * (coef / 100);
             return realDamage;
@@ -45,7 +59,7 @@ namespace ArenaGame
         public virtual double Defend(double damage)
         {
             double coef = random.Next(80, 120 + 1);
-            double defendPower = (Armor + Weapon.BlockingPower) * (coef / 100);
+            double defendPower = (Armor + PlayerWeapon.BlockingPower) * (coef / 100);
             double realDamage = damage - defendPower;
             if (realDamage < 0)
                 realDamage = 0;

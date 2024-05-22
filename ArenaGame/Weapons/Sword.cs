@@ -1,24 +1,18 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Runtime.CompilerServices;
 using System.Text;
 using System.Threading.Tasks;
 
 namespace ArenaGame.Weapons
 {
-    public class Sword : IWeapon
-    {
-        public string Name { get; set; }
-
-        public double AttackDamage { get; private set; }
-
-        public double BlockingPower { get; private set; }
-
-        public Sword(string name)
+    public class Sword : Weapon
+    { 
+        public Sword(string name, double attackDamage, double damageMultiplier, double blockingPower)
+            : base (name, attackDamage, damageMultiplier, blockingPower)
         {
-            Name = name;
-            AttackDamage = 20;
-            BlockingPower = 10;
+            this.UniqueAttacks.AddRange(new string[]{"Slash", "Slice", "Split"});
         }
     }
 }

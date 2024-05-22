@@ -11,5 +11,6 @@ namespace ArenaGame
         string Name { get; set; }
         double AttackDamage { get; } 
         double BlockingPower { get; }
+        double DamageMultiplier { get; }
     }
 }
