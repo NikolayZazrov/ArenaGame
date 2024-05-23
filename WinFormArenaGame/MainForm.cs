@@ -37,10 +37,23 @@ namespace WinFormArenaGame
             tbKnight.Text = "";
             lbWinner.Visible = false;
 
+            static string SelectRandomHeroClass(Dictionary<string, Hero> weapons)
+            {
+                Random random = new Random();
+
+                return weapons.ElementAt(random.Next(0, weapons.Count)).Key;
+            }
+
+            //Balancing needs to be done to the stats and abilities of the heroes and weapons
+            var heroes = Loader.LoadHeroes();
+
+            var heroA = heroes[SelectRandomHeroClass(heroes)];
+            var heroB = heroes[SelectRandomHeroClass(heroes)];
+
             GameEngine gameEngine = new GameEngine()
             {
-                HeroA = new Knight("Knight", 10, 20, new Sword("Sword")),
-                HeroB = new Assassin("Assassin", 10, 5, new Dagger("Dagger")),
+                HeroA = heroA,
+                HeroB = heroB,
                 NotificationsCallBack = gameNotification
             };
 

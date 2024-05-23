@@ -1,4 +1,5 @@
-﻿using ArenaGame;
+﻿using System.Net;
+using ArenaGame;
 using ArenaGame.Heroes;
 using ArenaGame.Weapons;
 
@@ -6,6 +7,13 @@ namespace ConsoleArenaGame
 {
     class Program
     {
+        static string SelectRandomHeroClass(Dictionary<string, Hero> weapons)
+        {
+            Random random = new Random();
+
+            return weapons.ElementAt(random.Next(0, weapons.Count)).Key;
+        }
+
         static void ConsoleNotification(GameEngine.NotificationArgs args)
         {
             Console.WriteLine($"{args.Attacker.Name} attacked {args.Defender.Name}" +
@@ -18,13 +26,17 @@ namespace ConsoleArenaGame
         }
         static void Main(string[] args)
         {
-            Sword heroAWeapon = new Sword("Sword of Abaddon", 15, 1, 5);
-            Dagger heroBWeapon = new Dagger("Dagger of Betrayal", 20, 1.5, 0);
+            
+            //Balancing needs to be done to the stats and abilities of the heroes and weapons
+            var heroes = Loader.LoadHeroes();
+
+            var heroA = heroes[SelectRandomHeroClass(heroes)];
+            var heroB = heroes[SelectRandomHeroClass(heroes)];
 
             GameEngine gameEngine = new GameEngine()
             { 
-                HeroA = new Knight("Knight", 10, 20, heroAWeapon),
-                HeroB = new Assassin("Assassin", 10, 5, heroBWeapon),
+                HeroA = heroA,
+                HeroB = heroB,
                 NotificationsCallBack = ConsoleNotification
                 //NotificationsCallBack = args => Console.WriteLine($"{args.Attacker.Name} attacked {args.Defender.Name} with {args.Attack} and caused {args.Damage} damage.")
             };
